@@ -12,7 +12,7 @@ export default function Home() {
             src="/main-photo.jpg"
             alt="Couple photo"
             fill
-            className="object-cover opacity-60"
+            className="object-contain md:object-cover opacity-60"
             priority
           />
         </div>
