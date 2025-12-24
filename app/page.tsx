@@ -5,27 +5,27 @@ export default function Home() {
   return (
     <div className="min-h-screen bg-white">
       {/* Hero Section with Photo */}
-      <section className="relative h-screen">
+      <section className="relative h-[70vh] md:h-screen">
         {/* Replace the gradient with your actual hero photo by uncommenting Image below */}
         <div className="absolute inset-0 bg-gradient-to-br from-gray-900 via-gray-800 to-black">
           <Image
             src="/main-photo.jpg"
             alt="Couple photo"
             fill
-            className="object-contain md:object-cover opacity-60"
+            className="object-cover object-center opacity-60"
             priority
           />
         </div>
-        <div className="relative h-full flex items-center justify-center text-center px-4">
+        <div className="relative h-full flex items-center justify-center text-center px-6">
           <div className="max-w-4xl">
-            <p className="text-white/90 text-sm md:text-base tracking-[0.3em] uppercase mb-6 font-light">
+            <p className="text-white/90 text-xs md:text-base tracking-[0.2em] md:tracking-[0.3em] uppercase mb-4 md:mb-6 font-light">
               Save the Date
             </p>
-            <h1 className="text-white text-6xl md:text-8xl mb-8 font-light tracking-tight">
+            <h1 className="text-white text-4xl md:text-6xl lg:text-8xl mb-6 md:mb-8 font-light tracking-tight leading-tight">
               Samikshya & Shitosh
             </h1>
-            <div className="w-20 h-px bg-white/50 mx-auto mb-8"></div>
-            <p className="text-white/90 text-xl md:text-2xl font-light">
+            <div className="w-16 md:w-20 h-px bg-white/50 mx-auto mb-4 md:mb-8"></div>
+            <p className="text-white/90 text-lg md:text-xl lg:text-2xl font-light">
               March 12, 2026
             </p>
           </div>
@@ -33,12 +33,12 @@ export default function Home() {
       </section>
 
       {/* Introduction Section */}
-      <section className="py-24 px-4">
+      <section className="py-12 md:py-24 px-6">
         <div className="max-w-3xl mx-auto text-center">
-          <h2 className="text-4xl md:text-5xl mb-8 font-light tracking-tight text-gray-900">
+          <h2 className="text-3xl md:text-4xl lg:text-5xl mb-6 md:mb-8 font-light tracking-tight text-gray-900">
             Join Us
           </h2>
-          <p className="text-lg md:text-xl text-gray-600 leading-relaxed font-light">
+          <p className="text-base md:text-lg lg:text-xl text-gray-600 leading-relaxed font-light">
             We invite you to celebrate with us as we begin our journey together.
             Your presence would mean the world to us.
           </p>
@@ -46,42 +46,42 @@ export default function Home() {
       </section>
 
       {/* Details Section */}
-      <section className="py-24 px-4 bg-gray-50">
+      <section className="py-12 md:py-24 px-6 bg-gray-50">
         <div className="max-w-5xl mx-auto">
-          <div className="grid md:grid-cols-3 gap-16 text-center">
+          <div className="grid md:grid-cols-3 gap-10 md:gap-16 text-center">
             <div>
-              <h3 className="text-sm tracking-[0.2em] uppercase text-gray-400 mb-4 font-medium">
+              <h3 className="text-xs md:text-sm tracking-[0.2em] uppercase text-gray-400 mb-3 md:mb-4 font-medium">
                 Ceremony
               </h3>
-              <p className="text-2xl text-gray-900 mb-2 font-light">[Time]</p>
-              <p className="text-gray-600">[Venue Name]</p>
+              <p className="text-xl md:text-2xl text-gray-900 mb-2 font-light">[Time]</p>
+              <p className="text-base md:text-lg text-gray-600">[Venue Name]</p>
               <p className="text-sm text-gray-500 mt-2">[Address]</p>
             </div>
             <div>
-              <h3 className="text-sm tracking-[0.2em] uppercase text-gray-400 mb-4 font-medium">
+              <h3 className="text-xs md:text-sm tracking-[0.2em] uppercase text-gray-400 mb-3 md:mb-4 font-medium">
                 Reception
               </h3>
-              <p className="text-2xl text-gray-900 mb-2 font-light">[Time]</p>
-              <p className="text-gray-600">[Venue Name]</p>
+              <p className="text-xl md:text-2xl text-gray-900 mb-2 font-light">[Time]</p>
+              <p className="text-base md:text-lg text-gray-600">[Venue Name]</p>
               <p className="text-sm text-gray-500 mt-2">[Address]</p>
             </div>
             <div>
-              <h3 className="text-sm tracking-[0.2em] uppercase text-gray-400 mb-4 font-medium">
+              <h3 className="text-xs md:text-sm tracking-[0.2em] uppercase text-gray-400 mb-3 md:mb-4 font-medium">
                 Dress Code
               </h3>
-              <p className="text-2xl text-gray-900 mb-2 font-light">[Dress Code]</p>
-              <p className="text-gray-600">Optional subtitle</p>
+              <p className="text-xl md:text-2xl text-gray-900 mb-2 font-light">[Dress Code]</p>
+              <p className="text-base md:text-lg text-gray-600">Optional subtitle</p>
             </div>
           </div>
         </div>
       </section>
 
       {/* Photo Gallery Section */}
-      <section className="py-24 px-4">
+      <section className="py-12 md:py-24 px-6">
         <div className="max-w-6xl mx-auto">
-          <div className="grid md:grid-cols-2 gap-4">
+          <div className="grid md:grid-cols-2 gap-3 md:gap-4">
             {/* Replace gradients with your actual photos */}
-            <div className="relative h-96 bg-gradient-to-br from-gray-200 to-gray-300">
+            <div className="relative h-64 md:h-96 bg-gradient-to-br from-gray-200 to-gray-300">
               {/* <Image
                 src="/photo-1.jpg"
                 alt="Photo 1"
@@ -89,7 +89,7 @@ export default function Home() {
                 className="object-cover"
               /> */}
             </div>
-            <div className="relative h-96 bg-gradient-to-br from-gray-300 to-gray-200">
+            <div className="relative h-64 md:h-96 bg-gradient-to-br from-gray-300 to-gray-200">
               {/* <Image
                 src="/photo-2.jpg"
                 alt="Photo 2"
@@ -102,11 +102,11 @@ export default function Home() {
       </section>
 
       {/* RSVP Section */}
-      <section className="py-24 px-4 bg-gray-900 text-white">
+      <section className="py-12 md:py-24 px-6 bg-gray-900 text-white">
         <div className="max-w-2xl mx-auto">
-          <div className="text-center mb-12">
-            <h2 className="text-4xl md:text-5xl mb-4 font-light tracking-tight">RSVP</h2>
-            <p className="text-gray-400 text-lg font-light">
+          <div className="text-center mb-8 md:mb-12">
+            <h2 className="text-3xl md:text-4xl lg:text-5xl mb-3 md:mb-4 font-light tracking-tight">RSVP</h2>
+            <p className="text-gray-400 text-base md:text-lg font-light">
               Kindly respond by [RSVP Date]
             </p>
           </div>
@@ -116,7 +116,7 @@ export default function Home() {
       </section>
 
       {/* Footer */}
-      <footer className="py-12 px-4 text-center bg-black text-gray-500 text-sm tracking-wider">
+      <footer className="py-8 md:py-12 px-6 text-center bg-black text-gray-500 text-xs md:text-sm tracking-wider">
         <p>We look forward to celebrating with you</p>
       </footer>
     </div>
