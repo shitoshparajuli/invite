@@ -48,29 +48,22 @@ export default function Home() {
       {/* Details Section */}
       <section className="py-12 md:py-24 px-6 bg-gray-50">
         <div className="max-w-5xl mx-auto">
-          <div className="grid md:grid-cols-3 gap-10 md:gap-16 text-center">
+          <div className="grid md:grid-cols-2 gap-10 md:gap-16 text-center">
             <div>
               <h3 className="text-xs md:text-sm tracking-[0.2em] uppercase text-gray-400 mb-3 md:mb-4 font-medium">
-                Ceremony
+                Wedding Ceremony
               </h3>
-              <p className="text-xl md:text-2xl text-gray-900 mb-2 font-light">[Time]</p>
-              <p className="text-base md:text-lg text-gray-600">[Venue Name]</p>
-              <p className="text-sm text-gray-500 mt-2">[Address]</p>
+              <p className="text-xl md:text-2xl text-gray-900 mb-2 font-light">March 12, 2026</p>
+              <p className="text-base md:text-lg text-gray-600">Lemon Tree Premier</p>
+              <p className="text-sm text-gray-500 mt-2">Budhanilkantha, Kathmandu, Nepal</p>
             </div>
             <div>
               <h3 className="text-xs md:text-sm tracking-[0.2em] uppercase text-gray-400 mb-3 md:mb-4 font-medium">
                 Reception
               </h3>
-              <p className="text-xl md:text-2xl text-gray-900 mb-2 font-light">[Time]</p>
-              <p className="text-base md:text-lg text-gray-600">[Venue Name]</p>
-              <p className="text-sm text-gray-500 mt-2">[Address]</p>
-            </div>
-            <div>
-              <h3 className="text-xs md:text-sm tracking-[0.2em] uppercase text-gray-400 mb-3 md:mb-4 font-medium">
-                Dress Code
-              </h3>
-              <p className="text-xl md:text-2xl text-gray-900 mb-2 font-light">[Dress Code]</p>
-              <p className="text-base md:text-lg text-gray-600">Optional subtitle</p>
+              <p className="text-xl md:text-2xl text-gray-900 mb-2 font-light">March 16, 2026</p>
+              <p className="text-base md:text-lg text-gray-600">City Hall Ilam</p>
+              <p className="text-sm text-gray-500 mt-2">Ilam, Nepal</p>
             </div>
           </div>
         </div>

@@ -14,10 +14,7 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: "You're Invited",
-  description: "Join us in celebrating our special day",
-  icons: {
-    icon: '/header.jpg',
-  },
+  description: "Join us in celebrating our special day"
 };
 
 export default function RootLayout({
