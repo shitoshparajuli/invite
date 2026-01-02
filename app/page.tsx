@@ -36,11 +36,11 @@ export default function Home() {
       <section className="py-12 md:py-24 px-6">
         <div className="max-w-3xl mx-auto text-center">
           <h2 className="text-3xl md:text-4xl lg:text-5xl mb-6 md:mb-8 font-light tracking-tight text-gray-900">
-            Join Us
+            If you're reading this...
           </h2>
           <p className="text-base md:text-lg lg:text-xl text-gray-600 leading-relaxed font-light">
-            We invite you to celebrate with us as we begin our journey together.
-            Your presence would mean the world to us.
+            ...it means you've been a part of our story, and we can't imagine this chapter without you.
+            We'd love to have you there. It wouldn't be the same without you.
           </p>
         </div>
       </section>
