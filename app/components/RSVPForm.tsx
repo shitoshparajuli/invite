@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import { submitRSVP, getRSVPByEmail } from '../actions/rsvp';
 
-type ViewMode = 'lookup' | 'form' | 'success';
+type ViewMode = 'lookup' | 'view' | 'form' | 'success';
 
 export default function RSVPForm() {
   const [viewMode, setViewMode] = useState<ViewMode>('lookup');
@@ -27,7 +27,7 @@ export default function RSVPForm() {
       const result = await getRSVPByEmail(lookupEmail);
 
       if (result.success && result.rsvp) {
-        // Found existing RSVP - populate form
+        // Found existing RSVP - show view mode
         setFormData({
           name: result.rsvp.name,
           email: result.rsvp.email,
@@ -35,12 +35,20 @@ export default function RSVPForm() {
           attending: result.rsvp.attending,
         });
         setIsEditing(true);
-        setViewMode('form');
+        setViewMode('view');
         setStatus('idle');
       } else {
-        // No RSVP found - show error
-        setStatus('error');
-        setMessage(result.error || 'No RSVP found for this email address');
+        // No RSVP found - show form with email pre-filled
+        setFormData({
+          name: '',
+          email: lookupEmail,
+          numberOfGuests: '1',
+          attending: true,
+        });
+        setIsEditing(false);
+        setViewMode('form');
+        setStatus('idle');
+        setMessage('');
       }
     } catch (error) {
       setStatus('error');
@@ -91,6 +99,10 @@ export default function RSVPForm() {
     setIsEditing(false);
     setStatus('idle');
     setMessage('');
+    setViewMode('form');
+  };
+
+  const startEditing = () => {
     setViewMode('form');
   };
 
@@ -163,9 +175,76 @@ export default function RSVPForm() {
     );
   }
 
+  // View mode - Display existing RSVP
+  if (viewMode === 'view') {
+    return (
+      <div className="max-w-md mx-auto">
+        <div className="bg-white/10 border border-white/20 rounded-sm p-8">
+          <h3 className="text-white text-lg font-light mb-6 text-center">Your RSVP</h3>
+
+          <div className="space-y-4 mb-8">
+            <div>
+              <p className="text-gray-400 text-xs uppercase tracking-wide mb-1">Name</p>
+              <p className="text-white font-light">{formData.name}</p>
+            </div>
+
+            <div>
+              <p className="text-gray-400 text-xs uppercase tracking-wide mb-1">Email</p>
+              <p className="text-white font-light">{formData.email}</p>
+            </div>
+
+            <div>
+              <p className="text-gray-400 text-xs uppercase tracking-wide mb-1">Status</p>
+              {formData.attending ? (
+                <div className="flex items-center gap-2">
+                  <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-400/20 text-green-300">
+                    Attending
+                  </span>
+                  <span className="text-white font-light">
+                    {formData.numberOfGuests} {formData.numberOfGuests === '1' ? 'Guest' : 'Guests'}
+                  </span>
+                </div>
+              ) : (
+                <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-red-400/20 text-red-300">
+                  Not Attending
+                </span>
+              )}
+            </div>
+          </div>
+
+          <div className="space-y-3">
+            <button
+              onClick={startEditing}
+              className="w-full bg-white text-black py-4 font-light tracking-wide hover:bg-gray-100 transition-colors"
+            >
+              Edit RSVP
+            </button>
+
+            <div className="text-center">
+              <button
+                onClick={resetForm}
+                className="text-gray-400 hover:text-white text-sm tracking-wide transition-colors"
+              >
+                Back
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   // Form view (new RSVP or editing)
   return (
     <div className="max-w-md mx-auto">
+      {!isEditing && (
+        <div className="bg-blue-400/10 border border-blue-400/30 rounded-sm p-4 mb-6 text-center">
+          <p className="text-blue-300 text-sm font-light">
+            You haven't submitted an RSVP yet. Please fill out the form below.
+          </p>
+        </div>
+      )}
+
       {isEditing && (
         <div className="bg-white/10 border border-white/20 rounded-sm p-4 mb-6 text-center">
           <p className="text-white/90 text-sm font-light">
