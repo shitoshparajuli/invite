@@ -39,8 +39,7 @@ export default function Home() {
             If you're reading this...
           </h2>
           <p className="text-base md:text-lg lg:text-xl text-gray-600 leading-relaxed font-light">
-            ...it means you've been a part of our story, and we can't imagine this chapter without you.
-            We'd love to have you there. It wouldn't be the same without you.
+            ...it means you've been a part of our story, and we'd love to have you there as we begin our new chapter together. It wouldn't be the same without you.
           </p>
         </div>
       </section>
@@ -75,20 +74,20 @@ export default function Home() {
           <div className="grid md:grid-cols-2 gap-3 md:gap-4">
             {/* Replace gradients with your actual photos */}
             <div className="relative h-64 md:h-96 bg-gradient-to-br from-gray-200 to-gray-300">
-              {/* <Image
-                src="/photo-1.jpg"
+              <Image
+                src="/sunset.jpeg"
                 alt="Photo 1"
                 fill
                 className="object-cover"
-              /> */}
+              />
             </div>
             <div className="relative h-64 md:h-96 bg-gradient-to-br from-gray-300 to-gray-200">
-              {/* <Image
-                src="/photo-2.jpg"
+              <Image
+                src="/option3.jpg"
                 alt="Photo 2"
                 fill
                 className="object-cover"
-              /> */}
+              />
             </div>
           </div>
         </div>
