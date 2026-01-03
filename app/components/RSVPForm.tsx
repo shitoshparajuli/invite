@@ -26,8 +26,9 @@ export default function RSVPForm() {
     try {
       const result = await getRSVPByEmail(lookupEmail);
 
-      if (result.success && result.rsvp) {
-        // Found existing RSVP - show view mode
+      // Check if they actually submitted an RSVP (has a name) vs just checked
+      if (result.success && result.rsvp && result.rsvp.name) {
+        // Found real RSVP - show view mode
         setFormData({
           name: result.rsvp.name,
           email: result.rsvp.email,
@@ -38,7 +39,7 @@ export default function RSVPForm() {
         setViewMode('view');
         setStatus('idle');
       } else {
-        // No RSVP found - show form with email pre-filled
+        // No RSVP found (or only check-only record) - show form with email pre-filled
         setFormData({
           name: '',
           email: lookupEmail,
@@ -201,7 +202,7 @@ export default function RSVPForm() {
                     Attending
                   </span>
                   <span className="text-white font-light">
-                    {formData.numberOfGuests} {formData.numberOfGuests === '1' ? 'Guest' : 'Guests'}
+                    {formData.numberOfGuests === '1' ? 'Just you' : formData.numberOfGuests === '2' ? '+1' : '+2'}
                   </span>
                 </div>
               ) : (
@@ -320,11 +321,9 @@ export default function RSVPForm() {
               onChange={(e) => setFormData({ ...formData, numberOfGuests: e.target.value })}
               className="w-full px-0 py-3 bg-transparent border-0 border-b border-white/20 focus:border-white text-white outline-none transition-colors font-light appearance-none cursor-pointer"
             >
-              {[1, 2, 3, 4, 5, 6].map((num) => (
-                <option key={num} value={num} className="bg-gray-900">
-                  {num} {num === 1 ? 'Guest' : 'Guests'}
-                </option>
-              ))}
+              <option value="1" className="bg-gray-900">Just me</option>
+              <option value="2" className="bg-gray-900">+1</option>
+              <option value="3" className="bg-gray-900">+2</option>
             </select>
           </div>
         )}

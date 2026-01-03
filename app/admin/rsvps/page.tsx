@@ -19,8 +19,9 @@ export default async function AdminRSVPsPage() {
   const allRecords = result.rsvps;
 
   // Separate submitted RSVPs from check-only records
-  const submittedRSVPs = allRecords.filter(r => r.submittedAt !== null);
-  const checkOnlyRecords = allRecords.filter(r => r.submittedAt === null && r.lastCheckedAt !== null);
+  // If name is NULL, they only checked but haven't actually RSVPd
+  const submittedRSVPs = allRecords.filter(r => r.name !== null);
+  const checkOnlyRecords = allRecords.filter(r => r.name === null && r.lastCheckedAt !== null);
 
   const attendingGuests = submittedRSVPs.filter(r => r.attending);
   const decliningGuests = submittedRSVPs.filter(r => r.attending === false);
