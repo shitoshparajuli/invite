@@ -13,7 +13,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "You're Invited",
+  title: "You're Invited!!!",
   description: "Join us in celebrating our special day"
 };
 

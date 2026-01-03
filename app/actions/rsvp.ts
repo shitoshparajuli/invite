@@ -1,8 +1,6 @@
 'use server';
 
-import { writeFile, readFile, mkdir } from 'fs/promises';
-import { existsSync } from 'fs';
-import path from 'path';
+import { supabase } from '../../lib/supabase';
 
 export interface RSVPData {
   name: string;
@@ -12,34 +10,58 @@ export interface RSVPData {
   submittedAt: string;
 }
 
-const DATA_DIR = path.join(process.cwd(), 'data');
-const RSVP_FILE = path.join(DATA_DIR, 'rsvps.json');
-
-async function ensureDataDirectory() {
-  if (!existsSync(DATA_DIR)) {
-    await mkdir(DATA_DIR, { recursive: true });
-  }
-}
-
-async function getRSVPs(): Promise<RSVPData[]> {
-  await ensureDataDirectory();
-
-  if (!existsSync(RSVP_FILE)) {
-    return [];
-  }
-
+export async function getRSVPByEmail(email: string) {
   try {
-    const data = await readFile(RSVP_FILE, 'utf-8');
-    return JSON.parse(data);
-  } catch (error) {
-    console.error('Error reading RSVPs:', error);
-    return [];
-  }
-}
+    // Basic email validation
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+      return { success: false, error: 'Please enter a valid email address' };
+    }
 
-async function saveRSVPs(rsvps: RSVPData[]): Promise<void> {
-  await ensureDataDirectory();
-  await writeFile(RSVP_FILE, JSON.stringify(rsvps, null, 2), 'utf-8');
+    const normalizedEmail = email.toLowerCase();
+
+    const { data, error } = await supabase
+      .from('rsvps')
+      .select('*')
+      .eq('email', normalizedEmail)
+      .single();
+
+    if (error) {
+      if (error.code === 'PGRST116') {
+        // No RSVP found - log that they checked
+        await supabase
+          .from('rsvps')
+          .insert([{
+            email: normalizedEmail,
+            last_checked_at: new Date().toISOString(),
+          }]);
+
+        return { success: false, error: 'No RSVP found for this email address' };
+      }
+      console.error('Error looking up RSVP:', error);
+      return { success: false, error: 'Failed to look up RSVP. Please try again.' };
+    }
+
+    // Update last_checked_at for existing RSVP
+    await supabase
+      .from('rsvps')
+      .update({ last_checked_at: new Date().toISOString() })
+      .eq('email', normalizedEmail);
+
+    // Convert database format to app format
+    const rsvp: RSVPData = {
+      name: data.name,
+      email: data.email,
+      numberOfGuests: data.number_of_guests,
+      attending: data.attending,
+      submittedAt: data.submitted_at,
+    };
+
+    return { success: true, rsvp };
+  } catch (error) {
+    console.error('Error looking up RSVP:', error);
+    return { success: false, error: 'Failed to look up RSVP. Please try again.' };
+  }
 }
 
 export async function submitRSVP(data: RSVPData) {
@@ -55,27 +77,82 @@ export async function submitRSVP(data: RSVPData) {
       return { success: false, error: 'Please enter a valid email address' };
     }
 
-    // Get existing RSVPs
-    const rsvps = await getRSVPs();
+    const normalizedEmail = data.email.toLowerCase();
 
-    // Check for duplicate email
-    const existingRSVP = rsvps.find(rsvp => rsvp.email.toLowerCase() === data.email.toLowerCase());
+    // Check if RSVP already exists
+    const { data: existingRSVP } = await supabase
+      .from('rsvps')
+      .select('id')
+      .eq('email', normalizedEmail)
+      .single();
+
+    // Prepare data for database
+    const dbData = {
+      name: data.name,
+      email: normalizedEmail,
+      number_of_guests: data.numberOfGuests,
+      attending: data.attending,
+      submitted_at: data.submittedAt,
+      updated_at: new Date().toISOString(),
+    };
+
     if (existingRSVP) {
       // Update existing RSVP
-      const updatedRSVPs = rsvps.map(rsvp =>
-        rsvp.email.toLowerCase() === data.email.toLowerCase() ? data : rsvp
-      );
-      await saveRSVPs(updatedRSVPs);
+      const { error } = await supabase
+        .from('rsvps')
+        .update(dbData)
+        .eq('email', normalizedEmail);
+
+      if (error) {
+        console.error('Error updating RSVP:', error);
+        return { success: false, error: 'Failed to update RSVP. Please try again.' };
+      }
+
       return { success: true, message: 'RSVP updated successfully' };
+    } else {
+      // Insert new RSVP
+      const { error } = await supabase
+        .from('rsvps')
+        .insert([dbData]);
+
+      if (error) {
+        console.error('Error submitting RSVP:', error);
+        return { success: false, error: 'Failed to submit RSVP. Please try again.' };
+      }
+
+      return { success: true, message: 'RSVP submitted successfully' };
     }
-
-    // Add new RSVP
-    rsvps.push(data);
-    await saveRSVPs(rsvps);
-
-    return { success: true, message: 'RSVP submitted successfully' };
   } catch (error) {
     console.error('Error submitting RSVP:', error);
     return { success: false, error: 'Failed to submit RSVP. Please try again.' };
+  }
+}
+
+export async function getAllRSVPs() {
+  try {
+    const { data, error } = await supabase
+      .from('rsvps')
+      .select('*')
+      .order('submitted_at', { ascending: false, nullsFirst: false });
+
+    if (error) {
+      console.error('Error fetching RSVPs:', error);
+      return { success: false, error: 'Failed to fetch RSVPs' };
+    }
+
+    // Convert database format to app format, including check-only records
+    const allRecords = data.map((row: any) => ({
+      name: row.name || null,
+      email: row.email,
+      numberOfGuests: row.number_of_guests || 0,
+      attending: row.attending,
+      submittedAt: row.submitted_at || null,
+      lastCheckedAt: row.last_checked_at || null,
+    }));
+
+    return { success: true, rsvps: allRecords };
+  } catch (error) {
+    console.error('Error fetching all RSVPs:', error);
+    return { success: false, error: 'Failed to fetch RSVPs' };
   }
 }

@@ -99,7 +99,6 @@ export default function Home() {
           <div className="text-center mb-8 md:mb-12">
             <h2 className="text-3xl md:text-4xl lg:text-5xl mb-3 md:mb-4 font-light tracking-tight">RSVP</h2>
             <p className="text-gray-400 text-base md:text-lg font-light">
-              Kindly respond by [RSVP Date]
             </p>
           </div>
 
@@ -109,7 +108,7 @@ export default function Home() {
 
       {/* Footer */}
       <footer className="py-8 md:py-12 px-6 text-center bg-black text-gray-500 text-xs md:text-sm tracking-wider">
-        <p>We look forward to celebrating with you</p>
+        <p>We look forward to celebrating with you!</p>
       </footer>
     </div>
   );
